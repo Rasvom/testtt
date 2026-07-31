@@ -1,0 +1,65 @@
+name: publish-reel
+
+# Сервер в РФ не может ни отдать файл серверам Meta, ни достучаться до graph.facebook.com,
+# поэтому публикует раннер GitHub: он и файл раздаёт, и до Instagram дотягивается.
+on:
+  push:
+    paths:
+      - 'queue/*.json'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Опубликовать рилс
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          set -e
+          job=$(ls -1 queue/*.json 2>/dev/null | head -1)
+          if [ -z "$job" ]; then echo "очередь пуста"; exit 0; fi
+          echo "публикую $job"
+
+          video_url=$(python3 -c "import json,sys;print(json.load(open('$job'))['video_url'])")
+          cover_url=$(python3 -c "import json,sys;print(json.load(open('$job'))['cover_url'])")
+          caption=$(python3 -c "import json,sys;print(json.load(open('$job'))['caption'])")
+
+          # шаг 1: контейнер. Instagram скачивает файл сам, поэтому ссылка должна быть публичной
+          resp=$(curl -sS -X POST "https://graph.facebook.com/v23.0/$IG_USER_ID/media" \
+            --data-urlencode "media_type=REELS" \
+            --data-urlencode "video_url=$video_url" \
+            --data-urlencode "cover_url=$cover_url" \
+            --data-urlencode "caption=$caption" \
+            --data-urlencode "share_to_feed=true" \
+            --data-urlencode "access_token=$IG_ACCESS_TOKEN")
+          echo "ответ: $resp"
+          container=$(python3 -c "import json,sys;print(json.loads('''$resp''').get('id',''))")
+          if [ -z "$container" ]; then echo "контейнер не создан"; exit 1; fi
+
+          # шаг 2: ждём обработки – публиковать необработанный контейнер нельзя
+          for i in $(seq 1 60); do
+            st=$(curl -sS "https://graph.facebook.com/v23.0/$container?fields=status_code,status&access_token=$IG_ACCESS_TOKEN")
+            code=$(python3 -c "import json,sys;print(json.loads('''$st''').get('status_code',''))")
+            echo "статус: $code"
+            [ "$code" = "FINISHED" ] && break
+            if [ "$code" = "ERROR" ] || [ "$code" = "EXPIRED" ]; then echo "$st"; exit 1; fi
+            sleep 5
+          done
+
+          # шаг 3: публикация
+          pub=$(curl -sS -X POST "https://graph.facebook.com/v23.0/$IG_USER_ID/media_publish" \
+            --data-urlencode "creation_id=$container" \
+            --data-urlencode "access_token=$IG_ACCESS_TOKEN")
+          echo "опубликовано: $pub"
+
+          # задание убираем из очереди, чтобы следующий push не повторил публикацию
+          rm -f "$job"
+          git config user.email bot@xago.ru
+          git config user.name xago-media
+          git add -A
+          git commit -m "опубликован $(basename $job .json)" || true
+          git push
