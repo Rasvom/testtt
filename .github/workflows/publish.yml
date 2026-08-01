@@ -8,6 +8,10 @@ on:
       - 'queue/*.json'
   workflow_dispatch:
 
+permissions:
+  # без права записи задание не удаляется из очереди и следующий запуск публикует его повторно
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
