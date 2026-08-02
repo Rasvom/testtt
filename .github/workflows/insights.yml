@@ -1,0 +1,82 @@
+name: collect-insights
+
+# Статистику по опубликованному может собрать только раннер: с сервера graph.facebook.com
+# недоступен, а токен лежит здесь, в секретах репозитория. Результат кладём в stats.json,
+# сервер читает его через raw и шлёт сводку владельцу в Telegram.
+on:
+  schedule:
+    - cron: '30 17 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Собрать статистику
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          set -e
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.parse, datetime
+
+          ig = os.environ['IG_USER_ID']
+          tok = os.environ['IG_ACCESS_TOKEN']
+          base = 'https://graph.facebook.com/v23.0'
+
+          def get(path, **params):
+              params['access_token'] = tok
+              url = f'{base}/{path}?' + urllib.parse.urlencode(params)
+              with urllib.request.urlopen(url, timeout=60) as r:
+                  return json.load(r)
+
+          media = get(f'{ig}/media', fields='id,permalink,timestamp,caption', limit=15).get('data', [])
+          out = []
+          for m in media:
+              row = {
+                  'id': m['id'],
+                  'permalink': m.get('permalink'),
+                  'timestamp': m.get('timestamp'),
+                  'hook': (m.get('caption') or '').split('\n')[0][:120],
+              }
+              try:
+                  ins = get(f"{m['id']}/insights", metric='views,reach,likes,comments,saved,shares')
+                  for item in ins.get('data', []):
+                      vals = item.get('values') or [{}]
+                      row[item['name']] = vals[0].get('value', 0)
+              except Exception as e:
+                  row['insights_error'] = str(e)[:120]
+              out.append(row)
+
+          # срок жизни токена: чтобы публикация не встала молча
+          token_expires = None
+          try:
+              dbg = get('debug_token', input_token=tok)
+              exp = dbg.get('data', {}).get('expires_at')
+              if exp:
+                  token_expires = datetime.datetime.utcfromtimestamp(exp).isoformat() + 'Z'
+          except Exception:
+              pass
+
+          json.dump(
+              {'collected_at': datetime.datetime.utcnow().isoformat() + 'Z', 'token_expires_at': token_expires, 'media': out},
+              open('stats.json', 'w'),
+              ensure_ascii=False,
+              indent=1,
+          )
+          print('собрано записей:', len(out))
+          PY
+
+      - name: Сохранить
+        run: |
+          git config user.email bot@xago.ru
+          git config user.name xago-media
+          git add stats.json
+          git commit -m "статистика $(date -u +%d.%m)" || exit 0
+          git push
