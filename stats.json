@@ -1,69 +1,126 @@
 {
- "collected_at": "2026-08-02T23:11:13.511661Z",
- "token_expires_at": "2026-09-29T22:46:46Z",
+ "collected_at": "2026-08-03T07:40:38.486281Z",
+ "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
+  {
+   "id": "18363404776212877",
+   "permalink": "https://www.instagram.com/reel/DbkcbS2jPkS/",
+   "timestamp": "2026-08-03T07:23:47+0000",
+   "hook": "200 откликов в день – это лимит самого hh, бот выбирает его полностью.",
+   "views": 0,
+   "reach": 0,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
+  },
   {
    "id": "18132026023618749",
    "permalink": "https://www.instagram.com/reel/DbiOVpJladT/",
    "timestamp": "2026-08-02T10:42:16+0000",
    "hook": "Хватит откликаться руками. Подключение занимает две минуты.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 3,
+   "reach": 3,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "18605929681009025",
    "permalink": "https://www.instagram.com/reel/Dbh3fXRkk61/",
    "timestamp": "2026-08-02T07:22:37+0000",
    "hook": "Две минуты на подключение – и отклики уходят без тебя.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 27,
+   "reach": 25,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "18324342565273966",
    "permalink": "https://www.instagram.com/reel/DbgmXmnkSsK/",
    "timestamp": "2026-08-01T19:33:43+0000",
    "hook": "Хватит откликаться руками. Подключение занимает две минуты.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 135,
+   "reach": 132,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "18100820900243314",
    "permalink": "https://www.instagram.com/reel/DbflNQ3gj4J/",
    "timestamp": "2026-08-01T10:04:48+0000",
    "hook": "Бот XAGO отправляет отклики быстрее, чем ты успеваешь прочитать вакансии. Проверь, как это работает – ссылка в профиле.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 13,
+   "reach": 11,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "17878192746511668",
    "permalink": "https://www.instagram.com/reel/DbfcuXBkd-0/",
    "timestamp": "2026-08-01T08:50:15+0000",
    "hook": "Хватит откликаться руками. Подключение занимает две минуты.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 19,
+   "reach": 18,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "17902508889327666",
    "permalink": "https://www.instagram.com/reel/DbfSupUiY--/",
    "timestamp": "2026-08-01T07:22:55+0000",
    "hook": "Хватит откликаться руками. Подключение занимает две минуты.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 26,
+   "reach": 23,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "18329088268261684",
    "permalink": "https://www.instagram.com/reel/DbfKxXgDfEk/",
    "timestamp": "2026-08-01T06:13:18+0000",
    "hook": "13 178 откликов на hh, руками не отправлено ни одного.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 32,
+   "reach": 29,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   },
   {
    "id": "18151598221500767",
    "permalink": "https://www.instagram.com/reel/DbeiSEAk8hy/",
    "timestamp": "2026-08-01T00:19:34+0000",
    "hook": "13136 откликов на hh, руками не отправлено ни одного.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 68,
+   "reach": 61,
+   "likes": 1,
+   "comments": 0,
+   "saved": 1,
+   "shares": 0
   },
   {
    "id": "17998948293004558",
    "permalink": "https://www.instagram.com/reel/DbecJcblHZA/",
    "timestamp": "2026-07-31T23:26:18+0000",
    "hook": "13 116 откликов на hh, руками не отправлено ни одного.",
-   "insights_error": "HTTP Error 400: Bad Request"
+   "views": 131,
+   "reach": 120,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
   }
  ]
 }
