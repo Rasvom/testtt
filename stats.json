@@ -1,26 +1,50 @@
 {
- "collected_at": "2026-08-04T19:07:00.932339Z",
+ "collected_at": "2026-08-05T19:01:11.623783Z",
  "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
   {
-   "id": "17976851511081878",
-   "permalink": "https://www.instagram.com/reel/Dbn_jXQjzRl/",
-   "timestamp": "2026-08-04T16:28:29+0000",
-   "hook": "20 откликов за вечер руками против 200 в сутки на автопилоте.",
-   "views": 2,
-   "reach": 2,
+   "id": "18117310309869864",
+   "permalink": "https://www.instagram.com/reel/DbqkbhlEl3u/",
+   "timestamp": "2026-08-05T16:29:12+0000",
+   "hook": "Бот отправляет 200 откликов в день, пока ты спишь. Ответы – в 31% случаев. Ссылка в профиле.",
+   "views": 0,
+   "reach": 0,
    "likes": 0,
    "comments": 0,
    "saved": 0,
    "shares": 0
   },
   {
+   "id": "18125983372707148",
+   "permalink": "https://www.instagram.com/reel/DbpmoCFACM_/",
+   "timestamp": "2026-08-05T07:29:12+0000",
+   "hook": "200 откликов в день – лимит самого hh, бот выбирает его целиком.",
+   "views": 10,
+   "reach": 13,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0
+  },
+  {
+   "id": "17976851511081878",
+   "permalink": "https://www.instagram.com/reel/Dbn_jXQjzRl/",
+   "timestamp": "2026-08-04T16:28:29+0000",
+   "hook": "20 откликов за вечер руками против 200 в сутки на автопилоте.",
+   "views": 15,
+   "reach": 13,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 1
+  },
+  {
    "id": "18115848142921344",
    "permalink": "https://www.instagram.com/reel/DbnBsb-EdM4/",
    "timestamp": "2026-08-04T07:27:53+0000",
    "hook": "20 откликов за вечер руками против 200 в сутки на автопилоте.",
-   "views": 24,
-   "reach": 15,
+   "views": 41,
+   "reach": 36,
    "likes": 0,
    "comments": 0,
    "saved": 0,
@@ -32,7 +56,7 @@
    "timestamp": "2026-08-03T21:23:47+0000",
    "hook": "200 откликов в день – это лимит самого hh, бот выбирает его полностью.",
    "views": 105,
-   "reach": 96,
+   "reach": 97,
    "likes": 0,
    "comments": 0,
    "saved": 0,
@@ -156,18 +180,6 @@
    "likes": 1,
    "comments": 0,
    "saved": 1,
-   "shares": 0
-  },
-  {
-   "id": "17998948293004558",
-   "permalink": "https://www.instagram.com/reel/DbecJcblHZA/",
-   "timestamp": "2026-07-31T23:26:18+0000",
-   "hook": "13 116 откликов на hh, руками не отправлено ни одного.",
-   "views": 131,
-   "reach": 120,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
    "shares": 0
   }
  ]
