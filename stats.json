@@ -1,34 +1,62 @@
 {
- "collected_at": "2026-09-05T19:14:57.291186Z",
+ "collected_at": "2026-09-06T19:24:31.067812Z",
  "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
+  {
+   "id": "17990383199846104",
+   "permalink": "https://www.instagram.com/reel/Dc89o9Fk0re/",
+   "timestamp": "2026-09-06T16:27:13+0000",
+   "hook": "Поиск работы на hh: дело не в резюме, а в том, каким по счёту пришёл твой отклик.",
+   "views": 2,
+   "reach": 2,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 1228,
+   "ig_reels_video_view_total_time": 2456
+  },
+  {
+   "id": "18121263209485500",
+   "permalink": "https://www.instagram.com/reel/Dc7_2k3DlmW/",
+   "timestamp": "2026-09-06T07:27:20+0000",
+   "hook": "Поиск работы на hh: вместо двух часов откликов каждый вечер – 200 в сутки на автопилоте.",
+   "views": 2,
+   "reach": 2,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 14214,
+   "ig_reels_video_view_total_time": 28429
+  },
   {
    "id": "18419743504151675",
    "permalink": "https://www.instagram.com/reel/Dc6aQzUDMyr/",
    "timestamp": "2026-09-05T16:39:37+0000",
    "hook": "Поиск работы на hh: до 6 000 откликов в месяц, если запускать бота каждый день.",
-   "views": 1,
-   "reach": 1,
+   "views": 2,
+   "reach": 2,
    "likes": 0,
    "comments": 0,
    "saved": 0,
    "shares": 0,
-   "ig_reels_avg_watch_time": 10652,
-   "ig_reels_video_view_total_time": 10652
+   "ig_reels_avg_watch_time": 7134,
+   "ig_reels_video_view_total_time": 14269
   },
   {
    "id": "18161526676484729",
    "permalink": "https://www.instagram.com/reel/Dc5bOC2kdE3/",
    "timestamp": "2026-09-05T07:28:41+0000",
    "hook": "Отклики на вакансии hh уходят без тебя: 200 в сутки, сопроводительные и ответы – на боте.",
-   "views": 2,
-   "reach": 1,
+   "views": 30,
+   "reach": 29,
    "likes": 0,
    "comments": 0,
    "saved": 0,
    "shares": 0,
-   "ig_reels_avg_watch_time": 2498,
-   "ig_reels_video_view_total_time": 4997
+   "ig_reels_avg_watch_time": 1415,
+   "ig_reels_video_view_total_time": 42453
   },
   {
    "id": "18114595792984069",
@@ -183,34 +211,6 @@
    "shares": 0,
    "ig_reels_avg_watch_time": 1061,
    "ig_reels_video_view_total_time": 88113
-  },
-  {
-   "id": "18118915249937244",
-   "permalink": "https://www.instagram.com/reel/Dcp-YNBgkZb/",
-   "timestamp": "2026-08-30T07:28:23+0000",
-   "hook": "Отклики на вакансии hh уходят без тебя: 200 в сутки, сопроводительные и ответы – на боте.",
-   "views": 16,
-   "reach": 16,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 2745,
-   "ig_reels_video_view_total_time": 46680
-  },
-  {
-   "id": "18113920778318033",
-   "permalink": "https://www.instagram.com/reel/DcoXSsRjJM3/",
-   "timestamp": "2026-08-29T16:27:18+0000",
-   "hook": "Отклики на hh: сопроводительное пишется под каждую вакансию отдельно, а не копируется.",
-   "views": 22,
-   "reach": 22,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 2388,
-   "ig_reels_video_view_total_time": 57317
   }
  ]
 }
