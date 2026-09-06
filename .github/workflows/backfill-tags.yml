@@ -1,0 +1,157 @@
+name: backfill-tags
+
+# Подпись у опубликованного ролика Graph API менять не умеет, поэтому ключевые фразы
+# уезжают первым комментарием от лица аккаунта: для Google это тот же текст на той же
+# странице, для Instagram – разметка темы.
+#
+# Запускается только руками. По умолчанию – сухой прогон: печатает, что ушло бы,
+# и ничего не публикует.
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'true – реально публиковать комментарии; false – только показать'
+        required: false
+        default: 'false'
+      limit:
+        description: 'Сколько роликов обработать за прогон'
+        required: false
+        default: '25'
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Проставить теги старым публикациям
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          APPLY: ${{ github.event.inputs.apply }}
+          LIMIT: ${{ github.event.inputs.limit }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.error, urllib.parse, urllib.request
+
+          ig = os.environ['IG_USER_ID']
+          tok = os.environ['IG_ACCESS_TOKEN']
+          apply = os.environ.get('APPLY', 'false').strip().lower() == 'true'
+          limit = int(os.environ.get('LIMIT') or '25')
+          base = 'https://graph.facebook.com/v23.0'
+
+          # Источник правды по фразам и тегам – server/content/caption.ts в hhgo-server.
+          # Здесь копия: раннер собирает без TypeScript, а списки меняются раз в полгода.
+          ANCHOR_PHRASE = 'автоотклики hh'
+          KEY_PHRASES = [
+              'hh автоотклики',
+              'автоматические отклики hh',
+              'автоматические отклики на вакансии',
+              'бот для откликов на hh',
+              'автоотклики на вакансии hh',
+              'массовые отклики hh',
+              'автоматический отклик на вакансии hh',
+              'бот для hh',
+              'автооткликер hh',
+          ]
+          ANCHOR_TAG = 'автооткликиhh'
+          NARROW_TAGS = [
+              'hhавтоотклики',
+              'автоматическиеоткликиhh',
+              'ботдляоткликов',
+              'откликинаhh',
+              'автооткликнавакансии',
+              'ботдляhh',
+          ]
+
+          def call(path, params, post=False):
+              params = dict(params, access_token=tok)
+              data = urllib.parse.urlencode(params).encode()
+              if post:
+                  req = urllib.request.Request(f'{base}/{path}', data=data)
+              else:
+                  req = urllib.request.Request(f'{base}/{path}?' + data.decode())
+              try:
+                  with urllib.request.urlopen(req, timeout=60) as r:
+                      return json.load(r)
+              except urllib.error.HTTPError as e:
+                  body = e.read().decode('utf-8', 'replace')[:800]
+                  raise RuntimeError(f'HTTP {e.code}: {body}')
+
+          def seed_of(s):
+              h = 0
+              for ch in s:
+                  h = (h * 31 + ord(ch)) % 100000
+              return h
+
+          def comment_for(media_id, caption):
+              n = seed_of(media_id)
+              low = (caption or '').lower()
+              phrases = [ANCHOR_PHRASE, KEY_PHRASES[n % len(KEY_PHRASES)], KEY_PHRASES[(n + 3) % len(KEY_PHRASES)]]
+              seen = set()
+              uniq = [p for p in phrases if not (p in seen or seen.add(p))]
+              line = ', '.join(uniq)
+              line = line[0].upper() + line[1:] + '.'
+              # Тег, уже стоящий в подписи, второй раз не нужен
+              tags = [t for t in [ANCHOR_TAG, NARROW_TAGS[n % len(NARROW_TAGS)], NARROW_TAGS[(n + 2) % len(NARROW_TAGS)]]
+                      if f'#{t}'.lower() not in low]
+              seen = set()
+              tags = [t for t in tags if not (t in seen or seen.add(t))]
+              return f'{line}\n' + ' '.join(f'#{t}' for t in tags) if tags else line
+
+          def all_media():
+              url = f'{ig}/media'
+              params = {'fields': 'id,permalink,timestamp,media_type,caption', 'limit': '50'}
+              out = []
+              while True:
+                  page = call(url, params)
+                  out.extend(page.get('data', []))
+                  nxt = (page.get('paging') or {}).get('cursors', {}).get('after')
+                  if not nxt or not page.get('data'):
+                      return out
+                  params = dict(params, after=nxt)
+
+          media = all_media()
+          media.sort(key=lambda m: m.get('timestamp') or '')
+          print(f'публикаций в аккаунте: {len(media)}, режим: {"публикация" if apply else "сухой прогон"}')
+
+          done = skipped = failed = 0
+          for m in media:
+              if done >= limit:
+                  print(f'достигнут лимит прогона ({limit}), остальные – следующим запуском')
+                  break
+              mid = m['id']
+              caption = m.get('caption') or ''
+              # Свой комментарий уже стоит – второй раз не пишем. Если список комментариев
+              # не отдался, ролик пропускаем: лучше не проставить, чем задвоить
+              try:
+                  existing = call(f'{mid}/comments', {'fields': 'text', 'limit': '50'}).get('data', [])
+              except Exception as e:
+                  print(f'SKIP {mid}: комментарии не прочитались – {e}')
+                  failed += 1
+                  continue
+              if any(ANCHOR_TAG in (c.get('text') or '').lower() or ANCHOR_PHRASE in (c.get('text') or '').lower()
+                     for c in existing):
+                  skipped += 1
+                  continue
+
+              text = comment_for(mid, caption)
+              head = caption.split('\n')[0][:60]
+              print(f'--- {m.get("timestamp", "")[:10]} {m.get("media_type")} {m.get("permalink") or mid}')
+              print(f'    подпись: {head}')
+              print(f'    комментарий: {text}')
+              if not apply:
+                  done += 1
+                  continue
+              try:
+                  res = call(f'{mid}/comments', {'message': text}, post=True)
+                  print(f'    опубликован комментарий {res.get("id")}')
+                  done += 1
+                  # Instagram режет частые комментарии как спам, поэтому не частим
+                  time.sleep(6)
+              except Exception as e:
+                  print(f'    ОШИБКА: {e}')
+                  failed += 1
+
+          print(f'итог: обработано {done}, пропущено (уже есть) {skipped}, ошибок {failed}')
+          if failed:
+              raise SystemExit(1)
+          PY
