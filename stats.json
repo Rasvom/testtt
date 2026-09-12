@@ -1,7 +1,35 @@
 {
- "collected_at": "2026-09-11T19:56:38.172952Z",
+ "collected_at": "2026-09-12T19:33:59.254119Z",
  "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
+  {
+   "id": "17944396893341193",
+   "permalink": "https://www.instagram.com/reel/DdMaUWBArXc/",
+   "timestamp": "2026-09-12T16:26:30+0000",
+   "hook": "Отклики на hh: первые попадают к работодателю, сотые пролистывают.",
+   "views": 3,
+   "reach": 2,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 6170,
+   "ig_reels_video_view_total_time": 18512
+  },
+  {
+   "id": "18107220962581871",
+   "permalink": "https://www.instagram.com/reel/DdLcosdEYj6/",
+   "timestamp": "2026-09-12T07:27:24+0000",
+   "hook": "Поиск работы на hh: бот делает 200 откликов, пока ты занят.",
+   "views": 2,
+   "reach": 1,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 8710,
+   "ig_reels_video_view_total_time": 8710
+  },
   {
    "id": "17930579949399966",
    "permalink": "https://www.instagram.com/reel/DdJ2_SliVg3/",
@@ -183,34 +211,6 @@
    "shares": 0,
    "ig_reels_avg_watch_time": 7134,
    "ig_reels_video_view_total_time": 14269
-  },
-  {
-   "id": "18161526676484729",
-   "permalink": "https://www.instagram.com/reel/Dc5bOC2kdE3/",
-   "timestamp": "2026-09-05T07:28:41+0000",
-   "hook": "Отклики на вакансии hh уходят без тебя: 200 в сутки, сопроводительные и ответы – на боте.",
-   "views": 30,
-   "reach": 29,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 1415,
-   "ig_reels_video_view_total_time": 42453
-  },
-  {
-   "id": "18114595792984069",
-   "permalink": "https://www.instagram.com/reel/Dc30CFfFrXa/",
-   "timestamp": "2026-09-04T16:27:14+0000",
-   "hook": "Отклики на hh: первые попадают к работодателю, сотые пролистывают.",
-   "views": 6,
-   "reach": 6,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 2969,
-   "ig_reels_video_view_total_time": 20787
   }
  ]
 }
