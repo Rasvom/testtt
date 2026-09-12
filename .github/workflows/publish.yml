@@ -1,0 +1,119 @@
+name: publish-reel
+
+# Сервер в РФ не может ни отдать файл серверам Meta, ни достучаться до graph.facebook.com,
+# поэтому публикует раннер GitHub: он и файл раздаёт, и до Instagram дотягивается.
+on:
+  push:
+    paths:
+      - 'queue/*.json'
+  workflow_dispatch:
+
+permissions:
+  # без права записи задание не удаляется из очереди и следующий запуск публикует его повторно
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Опубликовать рилс
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import glob, json, os, sys, time, urllib.error, urllib.parse, urllib.request
+
+          ig = os.environ['IG_USER_ID']
+          tok = os.environ['IG_ACCESS_TOKEN']
+          base = 'https://graph.facebook.com/v23.0'
+
+          def call(path, params, post=False):
+              params = dict(params, access_token=tok)
+              data = urllib.parse.urlencode(params).encode()
+              if post:
+                  req = urllib.request.Request(f'{base}/{path}', data=data)
+              else:
+                  req = urllib.request.Request(f'{base}/{path}?' + data.decode())
+              try:
+                  with urllib.request.urlopen(req, timeout=120) as r:
+                      return json.load(r)
+              # Ошибку Graph API отдаёт телом ответа с кодом 4xx – без чтения тела
+              # в логе остаётся голый HTTP Error без причины отказа
+              except urllib.error.HTTPError as e:
+                  body = e.read().decode('utf-8', 'replace')[:800]
+                  raise RuntimeError(f'HTTP {e.code}: {body}')
+
+          def publish(job):
+              task = json.load(open(job))
+              print(f'публикую {job}: {task.get("caption", "")[:80]}')
+
+              # шаг 1: контейнер. Instagram скачивает файл сам, поэтому ссылка должна быть публичной.
+              # share_to_feed=true: иначе ролик виден только во вкладке Reels, а в сетке профиля
+              # его нет вообще – со стороны выглядит так, будто публикация встала
+              resp = call(f'{ig}/media', {
+                  'media_type': 'REELS',
+                  'video_url': task['video_url'],
+                  'cover_url': task['cover_url'],
+                  'caption': task['caption'],
+                  'share_to_feed': 'true',
+              }, post=True)
+              container = resp.get('id')
+              if not container:
+                  raise RuntimeError(f'контейнер не создан: {resp}')
+
+              # шаг 2: ждём обработки – публиковать необработанный контейнер нельзя
+              code = None
+              for _ in range(60):
+                  st = call(container, {'fields': 'status_code,status'})
+                  code = st.get('status_code')
+                  print('статус:', code)
+                  if code == 'FINISHED':
+                      break
+                  if code in ('ERROR', 'EXPIRED'):
+                      raise RuntimeError(f'контейнер {code}: {st}')
+                  time.sleep(5)
+              # раньше цикл просто заканчивался и публикация шла по необработанному
+              # контейнеру: workflow оставался зелёным, ролика в Instagram не появлялось
+              if code != 'FINISHED':
+                  raise RuntimeError(f'контейнер так и не обработался, последний статус {code}')
+
+              # шаг 3: публикация
+              pub = call(f'{ig}/media_publish', {'creation_id': container}, post=True)
+              if not pub.get('id'):
+                  raise RuntimeError(f'публикация не прошла: {pub}')
+              print('опубликовано:', pub)
+
+          jobs = sorted(glob.glob('queue/*.json'))
+          if not jobs:
+              print('очередь пуста')
+              sys.exit(0)
+
+          failed = []
+          for job in jobs:
+              try:
+                  publish(job)
+                  # задание убираем только после успеха: иначе ролик пропадёт молча
+                  os.remove(job)
+              except Exception as e:
+                  print(f'ОШИБКА {job}: {e}')
+                  failed.append(job)
+
+          if failed:
+              print('не опубликовано:', ', '.join(failed))
+              sys.exit(1)
+          PY
+
+      - name: Убрать опубликованное из очереди
+        # always: если одно задание упало, а другое прошло – успешное всё равно надо снять
+        # с очереди, иначе следующий push опубликует его повторно
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain queue/)" ]; then echo "очередь не изменилась"; exit 0; fi
+          git config user.email bot@xago.ru
+          git config user.name xago-media
+          git add queue/
+          git commit -m "опубликован $(git diff --cached --name-only | xargs -n1 basename | sed 's/\.json$//' | tr '\n' ' ')"
+          git push
