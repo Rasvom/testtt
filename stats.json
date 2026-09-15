@@ -1,7 +1,35 @@
 {
- "collected_at": "2026-09-14T21:01:33.292631Z",
+ "collected_at": "2026-09-15T20:22:03.858413Z",
  "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
+  {
+   "id": "18112964918015465",
+   "permalink": "https://www.instagram.com/reel/DdUIvS0jCpy/",
+   "timestamp": "2026-09-15T16:26:45+0000",
+   "hook": "Автоматизация поиска работы: бот делает 200 откликов на hh, пока ты занят.",
+   "views": 0,
+   "reach": 0,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 0,
+   "ig_reels_video_view_total_time": 0
+  },
+  {
+   "id": "18084443420292037",
+   "permalink": "https://www.instagram.com/reel/DdTK8i3Fdyj/",
+   "timestamp": "2026-09-15T07:26:47+0000",
+   "hook": "Поиск работы на hh: дело не в резюме, а в том, каким по счёту пришёл твой отклик.",
+   "views": 4,
+   "reach": 4,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 5488,
+   "ig_reels_video_view_total_time": 21952
+  },
   {
    "id": "17912022240461176",
    "permalink": "https://www.instagram.com/reel/DdRj-S_jM7J/",
@@ -183,34 +211,6 @@
    "shares": 0,
    "ig_reels_avg_watch_time": 2405,
    "ig_reels_video_view_total_time": 14430
-  },
-  {
-   "id": "18354272437219682",
-   "permalink": "https://www.instagram.com/reel/DdBJTn5jO83/",
-   "timestamp": "2026-09-08T07:26:01+0000",
-   "hook": "Вакансии на hh: отклик уходит в первые минуты после публикации.",
-   "views": 6,
-   "reach": 5,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 5091,
-   "ig_reels_video_view_total_time": 30551
-  },
-  {
-   "id": "18063161846782992",
-   "permalink": "https://www.instagram.com/reel/Dc_iZH8DcCV/",
-   "timestamp": "2026-09-07T16:26:51+0000",
-   "hook": "Отклики на hh: шаблонное сопроводительное читают по диагонали.",
-   "views": 36,
-   "reach": 32,
-   "likes": 0,
-   "comments": 0,
-   "saved": 0,
-   "shares": 0,
-   "ig_reels_avg_watch_time": 5437,
-   "ig_reels_video_view_total_time": 179437
   }
  ]
 }
