@@ -1,7 +1,21 @@
 {
- "collected_at": "2026-09-25T20:38:40.541004Z",
+ "collected_at": "2026-09-26T20:03:51.567569Z",
  "token_expires_at": "2026-10-01T23:14:25Z",
  "media": [
+  {
+   "id": "18027043049693314",
+   "permalink": "https://www.instagram.com/reel/DdvfreiDgV_/",
+   "timestamp": "2026-09-26T07:26:36+0000",
+   "hook": "Поиск работы на hh: до 6 000 откликов в месяц, если запускать бота каждый день.",
+   "views": 0,
+   "reach": 0,
+   "likes": 0,
+   "comments": 0,
+   "saved": 0,
+   "shares": 0,
+   "ig_reels_avg_watch_time": 0,
+   "ig_reels_video_view_total_time": 0
+  },
   {
    "id": "17908785981473320",
    "permalink": "https://www.instagram.com/reel/Ddt4sRNFKUt/",
@@ -197,20 +211,6 @@
    "shares": 0,
    "ig_reels_avg_watch_time": 2585,
    "ig_reels_video_view_total_time": 10341
-  },
-  {
-   "id": "17874700785573856",
-   "permalink": "https://www.instagram.com/reel/Ddb3J0fivGD/",
-   "timestamp": "2026-09-18T16:27:02+0000",
-   "hook": "Поиск работы на hh без тебя: две минуты на подключение, дальше отклики уходят сами.",
-   "views": 6,
-   "reach": 2,
-   "likes": 0,
-   "comments": 0,
-   "saved": 1,
-   "shares": 1,
-   "ig_reels_avg_watch_time": 20631,
-   "ig_reels_video_view_total_time": 41263
   }
  ]
 }
